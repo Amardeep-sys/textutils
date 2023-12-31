@@ -79,6 +79,7 @@ margin: 0px auto;
 border-radius: 12px;
 font-size: 16px;
 will-change: scroll-position;
+resize: none;
 }
 
 .btn-group{

@@ -9,6 +9,15 @@ import CustomDarkmod from './components/customDarkmod.jsx';
 function App() {
   const[userText, setUserText] = useState("Enter your text here.");
   const [spellcheck, setSpellcheck] = useState(false);
+  const [disabled, setDisabled] = useState(false);
+  useEffect(()=>{
+  if(userText.trim() > 0){
+    setDisabled(true);
+  }else{
+    setDisabled(false);
+  }
+  }, [userText]);
+
   const capitalizeFirstLetterAfterFullStop = (str) => {
    
     const modifiedText = str.replace(/(?:[.]\s*)([a-zA-Z])/g, (match, letter) => {
@@ -50,7 +59,7 @@ function App() {
    <TextArea onChange= {setUserText} text={userText} disabled={false} style= {darkmodecss}/>
   <div className="textInfo" style={darkmodecss}>
     {/*  TEXT INFORMATION LIKE WORDS, CHARACTERS AND TIME TAKE TO READ */}
-    <p>Words : {userText === "" ? 0 : userText.trim().split(' ').length}</p>
+    <p>Words : {userText === "" ? 0 : userText.trim().split(' ').filter((x)=> x.trim().length > 0).length}</p>
     <p>Characters : {userText.trim().length}</p>
     <p>Time to read 
       : {Math.floor(userText.trim().split(" ").length / 200)} minutes
@@ -58,10 +67,10 @@ function App() {
   </div>
   {/*  BUTTON GROUP */}
    <div className='controls-btn'>
-   <Button text='uppercase' clickEve={() => setUserText(userText.toLocaleUpperCase())}/>
-   <Button text='lowercase' clickEve={()=> setUserText(userText.toLocaleLowerCase())}/>
-   <Button text='clear' clickEve={()=> setUserText("")}/>
-   <Button text='Capitalize' clickEve={()=> capitalizeFirstLetterAfterFullStop(userText)} />
+   <Button disabled={disabled} text='uppercase' clickEve={() => setUserText(userText.toLocaleUpperCase())}/>
+   <Button disabled={disabled} text='lowercase' clickEve={()=> setUserText(userText.toLocaleLowerCase())}/>
+   <Button disabled={disabled} text='clear' clickEve={()=> setUserText("")}/>
+   <Button disabled={disabled} text='Capitalize' clickEve={()=> capitalizeFirstLetterAfterFullStop(userText)} />
    </div>
     </div>
 
@@ -72,8 +81,8 @@ function App() {
   <h1 style={darkmodecss}>Custom Theme</h1>
   <div className='colorsSelect'>
 
-    <CustomDarkmod style={darkmodecss} label='Select Background Color'/>
-    <CustomDarkmod style={darkmodecss} label='Select Text Color'/>
+    <CustomDarkmod setcss = {setCss} colorOf="background" style={darkmodecss} label='Select Background Color'/>
+    <CustomDarkmod setcss = {setCss} colorOf="text" style={darkmodecss} label='Select Text Color'/>
   </div>
     </div>
     </div>
